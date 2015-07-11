@@ -6,7 +6,10 @@ import java.util.ArrayList;
  * Created by tunyash on 7/11/15.
  * Moving object on board
  */
+
+
 public class Bug {
+
     public Bug(BugAction startAction)
     {
         orders = new ArrayList<>();

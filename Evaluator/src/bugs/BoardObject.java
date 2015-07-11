@@ -4,7 +4,9 @@ package bugs;
  * Created by tunyash on 7/11/15.
  * Static object on board
  */
+
 abstract public class BoardObject {
+
     public BoardPosition[] getOccupied() {
         return occupied;
     }
