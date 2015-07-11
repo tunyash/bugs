@@ -6,6 +6,17 @@ package bugs;
  * @author tunyash
  */
 public class BoardPosition {
+    public BoardPosition(int row, int column)
+    {
+        this.row = row;
+        this.column = column;
+    }
+
+    public BoardPosition move(Direction dir)
+    {
+        return new BoardPosition(row + dir.getDr(), column + dir.getDc());
+    }
+
     public int getRow() {
         return row;
     }
@@ -22,10 +33,7 @@ public class BoardPosition {
         this.column = column;
     }
 
+
     private int row, column;
-    public BoardPosition(int row, int column)
-    {
-        this.row = row;
-        this.column = column;
-    }
+
 }

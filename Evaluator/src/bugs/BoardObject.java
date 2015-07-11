@@ -11,6 +11,7 @@ abstract public class BoardObject {
 
     abstract public void onBugStep(BoardPosition stepPos, Bug bug, Board board);
     abstract public void onTimerTick(Board board);
+    abstract public boolean isObstacle(BoardPosition pos);
 
     private BoardPosition[] occupied;
 }

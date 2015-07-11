@@ -33,6 +33,7 @@ public class Board {
 
     public void runGame()
     {
+        currentTime = 0;
         for (int it = 0; it < IT_COUNT; it++)
         {
             for (Bug bug : bugs)
@@ -44,6 +45,7 @@ public class Board {
                 }
             for (BoardObject obj : objects)
                 obj.onTimerTick(this);
+            currentTime++;
         }
     }
 
@@ -72,15 +74,30 @@ public class Board {
         return score;
     }
 
+    public ArrayList<BoardObject> getObjects() {
+        return objects;
+    }
 
+    public ArrayList<Bug> getBugs() {
+        return bugs;
+    }
 
+    public boolean isCorrectPosition(BoardPosition pos)
+    {
+        return pos.getColumn() >= 0 && pos.getColumn() < width && pos.getRow() >= 0 && pos.getRow() < height;
+    }
+
+    public boolean isObstacle(BoardPosition pos)
+    {
+        if (!isCorrectPosition(pos)) throw new AssertionError();
+        for (Integer obj : cellObjects[pos.getRow()][pos.getColumn()])
+            if (objects.get(obj).isObstacle(pos)) return true;
+        return false;
+    }
 
     private int width;
     private int height;
-
-
     private int currentTime;
-
     private final int IT_COUNT = 200;
     private int score;
     private ArrayList<BoardObject> objects;
