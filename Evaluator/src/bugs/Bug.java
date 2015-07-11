@@ -12,7 +12,7 @@ public class Bug {
         orders = new ArrayList<>();
         pushOrder(startAction);
     }
-    
+
     public Bug()
     {
         orders = new ArrayList<>();
@@ -37,6 +37,14 @@ public class Bug {
 
     public void setLifePoints(int lifePoints) {
         this.lifePoints = lifePoints;
+    }
+
+    public void evaluateOrders(Board board)
+    {
+        ArrayList<BugAction> restOrders = new ArrayList<>();
+        for (BugAction act : orders)
+            if (!act.evaluate(board, this)) restOrders.add(act);
+        orders = restOrders;
     }
 
     private BoardPosition currentPosition;

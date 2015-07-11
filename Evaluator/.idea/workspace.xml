@@ -68,34 +68,34 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Bug.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Bug.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/bugs/Bug.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2433372">
-              <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="45" column="64" selection-start-line="45" selection-start-column="64" selection-end-line="45" selection-end-column="64" />
               <folding>
-                <element signature="e#275#276#0" expanded="true" />
-                <element signature="e#317#318#0" expanded="true" />
-                <element signature="e#366#367#0" expanded="true" />
-                <element signature="e#404#405#0" expanded="true" />
-                <element signature="e#473#474#0" expanded="true" />
-                <element signature="e#527#528#0" expanded="true" />
-                <element signature="e#577#578#0" expanded="true" />
-                <element signature="e#610#611#0" expanded="true" />
-                <element signature="e#644#645#0" expanded="true" />
-                <element signature="e#677#678#0" expanded="true" />
-                <element signature="e#726#727#0" expanded="true" />
-                <element signature="e#770#771#0" expanded="true" />
+                <element signature="e#271#272#0" expanded="true" />
+                <element signature="e#313#314#0" expanded="true" />
+                <element signature="e#362#363#0" expanded="true" />
+                <element signature="e#400#401#0" expanded="true" />
+                <element signature="e#469#470#0" expanded="true" />
+                <element signature="e#523#524#0" expanded="true" />
+                <element signature="e#573#574#0" expanded="true" />
+                <element signature="e#606#607#0" expanded="true" />
+                <element signature="e#640#641#0" expanded="true" />
+                <element signature="e#673#674#0" expanded="true" />
+                <element signature="e#722#723#0" expanded="true" />
+                <element signature="e#766#767#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BugAction.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="BugAction.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/bugs/BugAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.22595596">
+              <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -139,8 +139,8 @@
       <list>
         <option value="$PROJECT_DIR$/src/bugs/BoardPosition.java" />
         <option value="$PROJECT_DIR$/src/bugs/BoardObject.java" />
-        <option value="$PROJECT_DIR$/src/bugs/Bug.java" />
         <option value="$PROJECT_DIR$/src/bugs/Board.java" />
+        <option value="$PROJECT_DIR$/src/bugs/Bug.java" />
         <option value="$PROJECT_DIR$/src/bugs/BugAction.java" />
       </list>
     </option>
@@ -149,8 +149,8 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="182" />
-    <option name="y" value="55" />
+    <option name="x" value="451" />
+    <option name="y" value="263" />
     <option name="width" value="1398" />
     <option name="height" value="1000" />
   </component>
@@ -382,7 +382,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="182" y="55" width="1398" height="1000" extended-state="0" />
+    <frame x="451" y="263" width="1398" height="1000" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -417,31 +417,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/bugs/BoardPosition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="20" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
-          <folding>
-            <element signature="e#150#151#0" expanded="true" />
-            <element signature="e#176#177#0" expanded="true" />
-            <element signature="e#211#212#0" expanded="true" />
-            <element signature="e#241#242#0" expanded="true" />
-            <element signature="e#271#272#0" expanded="true" />
-            <element signature="e#300#301#0" expanded="true" />
-            <element signature="e#341#342#0" expanded="true" />
-            <element signature="e#377#378#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/bugs/BugAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/bugs/BoardObject.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -482,24 +457,49 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/bugs/BoardPosition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="20" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
+          <folding>
+            <element signature="e#150#151#0" expanded="true" />
+            <element signature="e#176#177#0" expanded="true" />
+            <element signature="e#211#212#0" expanded="true" />
+            <element signature="e#241#242#0" expanded="true" />
+            <element signature="e#271#272#0" expanded="true" />
+            <element signature="e#300#301#0" expanded="true" />
+            <element signature="e#341#342#0" expanded="true" />
+            <element signature="e#377#378#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/bugs/Bug.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2433372">
-          <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="45" column="64" selection-start-line="45" selection-start-column="64" selection-end-line="45" selection-end-column="64" />
           <folding>
-            <element signature="e#275#276#0" expanded="true" />
-            <element signature="e#317#318#0" expanded="true" />
-            <element signature="e#366#367#0" expanded="true" />
-            <element signature="e#404#405#0" expanded="true" />
-            <element signature="e#473#474#0" expanded="true" />
-            <element signature="e#527#528#0" expanded="true" />
-            <element signature="e#577#578#0" expanded="true" />
-            <element signature="e#610#611#0" expanded="true" />
-            <element signature="e#644#645#0" expanded="true" />
-            <element signature="e#677#678#0" expanded="true" />
-            <element signature="e#726#727#0" expanded="true" />
-            <element signature="e#770#771#0" expanded="true" />
+            <element signature="e#271#272#0" expanded="true" />
+            <element signature="e#313#314#0" expanded="true" />
+            <element signature="e#362#363#0" expanded="true" />
+            <element signature="e#400#401#0" expanded="true" />
+            <element signature="e#469#470#0" expanded="true" />
+            <element signature="e#523#524#0" expanded="true" />
+            <element signature="e#573#574#0" expanded="true" />
+            <element signature="e#606#607#0" expanded="true" />
+            <element signature="e#640#641#0" expanded="true" />
+            <element signature="e#673#674#0" expanded="true" />
+            <element signature="e#722#723#0" expanded="true" />
+            <element signature="e#766#767#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/bugs/BugAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22595596">
+          <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
