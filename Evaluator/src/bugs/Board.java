@@ -15,6 +15,7 @@ public class Board {
         bugs = new ArrayList<>();
         cellObjects = new ArrayList[width][height];
         currentTime = 0;
+        score = 0;
     }
 
     public void addObject(BoardObject obj)
@@ -28,6 +29,22 @@ public class Board {
     public void addBug(BugAction startAction)
     {
         bugs.add(new Bug(startAction));
+    }
+
+    public void runGame()
+    {
+        for (int it = 0; it < IT_COUNT; it++)
+        {
+            for (Bug bug : bugs)
+                bug.evaluateOrders(this);
+            for (Bug bug : bugs)
+                if (bug.getLifePoints() > 0) {
+                    for (Integer obj : cellObjects[bug.getCurrentPosition().getRow()][bug.getCurrentPosition().getColumn()])
+                        objects.get(obj).onBugStep(bug.getCurrentPosition(), bug, this);
+                }
+            for (BoardObject obj : objects)
+                obj.onTimerTick(this);
+        }
     }
 
     public int getWidth() {
@@ -46,14 +63,26 @@ public class Board {
         this.height = height;
     }
 
-    private int width;
-    private int height;
 
     public int getCurrentTime() {
         return currentTime;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+
+
+
+    private int width;
+    private int height;
+
+
     private int currentTime;
+
+    private final int IT_COUNT = 200;
+    private int score;
     private ArrayList<BoardObject> objects;
     private ArrayList<Bug> bugs;
     private ArrayList<Integer>[][] cellObjects;
