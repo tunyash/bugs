@@ -26,7 +26,7 @@ public class Board {
         int id = objects.size();
         objects.add(obj);
         for (BoardPosition pos : obj.getOccupied()) {
-            System.out.printf("%d %d\n", pos.getRow(), pos.getColumn());
+          //  System.out.printf("%d %d\n", pos.getRow(), pos.getColumn());
             cellObjects[pos.getRow()][pos.getColumn()].add(id);
         }
     }
