@@ -41,4 +41,36 @@ abstract public class BugAction {
         };
     }
 
+    /**
+     * Action to put bug to the board
+     * @param pos
+     * @return true if bug succesfully appeared and false otherwise
+     */
+    public static BugAction appear(final BoardPosition pos)
+    {
+        return new BugAction() {
+            @Override
+            public boolean evaluate(Board board, Bug bug) {
+                if (board.isObstacle(pos)) return false;
+                bug.setCurrentPosition(pos);
+                return true;
+            }
+        };
+    }
+
+    /**
+     * kill the bug
+     * @return true
+     */
+    public static BugAction kill()
+    {
+        return new BugAction() {
+            @Override
+            public boolean evaluate(Board board, Bug bug) {
+                bug.setLifePoints(0);
+                return true;
+            }
+        };
+    }
+
 }

@@ -5,7 +5,7 @@ package bugs;
  * Pair of two ints.
  * @author tunyash
  */
-public class BoardPosition {
+public class BoardPosition implements Comparable<BoardPosition> {
 
 	public BoardPosition(int row, int column)
     {
@@ -36,4 +36,13 @@ public class BoardPosition {
 
 
     private int row, column;
+
+    @Override
+    public int compareTo(BoardPosition boardPosition) {
+        if (this.row > boardPosition.getRow()) return 1;
+        if (this.row < boardPosition.getRow()) return -1;
+        if (this.column > boardPosition.getColumn()) return 1;
+        if (this.column < boardPosition.getColumn()) return -1;
+        return 0;
+    }
 }

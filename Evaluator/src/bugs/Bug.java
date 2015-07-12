@@ -10,14 +10,24 @@ import java.util.ArrayList;
 
 public class Bug {
 
-    public Bug(BugAction startAction)
-    {
+
+    public Bug(BugAction startAction, int color) {
         orders = new ArrayList<>();
         pushOrder(startAction);
+        this.color = color;
+    }
+    public Bug(BugAction startAction) {
+        orders = new ArrayList<>();
+        pushOrder(startAction);
+        color = -1;
     }
 
-    public Bug()
-    {
+    public Bug(int color) {
+        orders = new ArrayList<>();
+        this.color = color;
+    }
+
+    public Bug() {
         orders = new ArrayList<>();
     }
 
@@ -29,8 +39,7 @@ public class Bug {
         this.currentPosition = currentPosition;
     }
 
-    public void pushOrder(BugAction order)
-    {
+    public void pushOrder(BugAction order) {
         orders.add(order);
     }
 
@@ -42,16 +51,27 @@ public class Bug {
         this.lifePoints = lifePoints;
     }
 
-    public void evaluateOrders(Board board)
-    {
+    public void evaluateOrders(Board board) {
         ArrayList<BugAction> restOrders = new ArrayList<>();
         for (BugAction act : orders)
-            if (!act.evaluate(board, this)) restOrders.add(act);
+            if (lifePoints > 0 && !act.evaluate(board, this)) restOrders.add(act);
         orders = restOrders;
+    }
+
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     private BoardPosition currentPosition;
     ArrayList<BugAction> orders;
     private int lifePoints;
+
+
+    private int color;
 
 }

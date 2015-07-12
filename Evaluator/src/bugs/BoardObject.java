@@ -11,15 +11,21 @@ abstract public class BoardObject {
         return occupied;
     }
 
-    abstract public void onBugStep(BoardPosition stepPos, Bug bug, Board board);
-    abstract public void onTimerTick(Board board);
+    public void onBugStep(BoardPosition stepPos, Bug bug, Board board) {
+
+    }
+
+    public void onTimerTick(Board board) {
+
+    }
 
     /**
-     *
      * @param pos should be one of occupied positions of object
      * @return true if pos should be obstacle, false if it is not
      */
-    abstract public boolean isObstacle(BoardPosition pos);
+    public boolean isObstacle(BoardPosition pos) {
+        return false;
+    }
 
-    private BoardPosition[] occupied;
+    protected BoardPosition[] occupied;
 }

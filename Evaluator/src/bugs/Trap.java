@@ -1,0 +1,25 @@
+package bugs;
+
+/**
+ * Created by tunyash on 7/12/15.
+ */
+public class Trap extends BoardObject {
+    public Trap(BoardPosition pos, int color)
+    {
+        this.color = color;
+        occupied = new BoardPosition[1];
+        occupied[0] = pos;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    @Override
+    public void onBugStep(BoardPosition stepPos, Bug bug, Board board) {
+        if (bug.getColor() == color)
+            bug.pushOrder(BugAction.kill());
+    }
+
+    private final int color;
+}

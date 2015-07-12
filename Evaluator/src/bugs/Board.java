@@ -9,8 +9,7 @@ import java.util.ArrayList;
 
 public class Board {
 
-    public Board(int width, int height)
-    {
+    public Board(int width, int height) {
         this.width = width;
         this.height = height;
         objects = new ArrayList<>();
@@ -20,24 +19,24 @@ public class Board {
         score = 0;
     }
 
-    public void addObject(BoardObject obj)
-    {
+    public void addObject(BoardObject obj) {
         int id = objects.size();
         objects.add(obj);
         for (BoardPosition pos : obj.getOccupied())
             cellObjects[pos.getRow()][pos.getColumn()].add(id);
     }
 
-    public void addBug(BugAction startAction)
-    {
-        bugs.add(new Bug(startAction));
+    public void addBug(Bug bug) {
+        bugs.add(bug);
     }
 
-    public void runGame()
-    {
+    public void addBug(BoardPosition pos, int color) {
+        bugs.add(new Bug(BugAction.appear(pos), color));
+    }
+
+    public void runGame() {
         currentTime = 0;
-        for (int it = 0; it < IT_COUNT; it++)
-        {
+        for (int it = 0; it < IT_COUNT; it++) {
             for (Bug bug : bugs)
                 bug.evaluateOrders(this);
             for (Bug bug : bugs)
@@ -67,7 +66,6 @@ public class Board {
         this.height = height;
     }
 
-
     public int getCurrentTime() {
         return currentTime;
     }
@@ -84,13 +82,11 @@ public class Board {
         return bugs;
     }
 
-    public boolean isCorrectPosition(BoardPosition pos)
-    {
+    public boolean isCorrectPosition(BoardPosition pos) {
         return pos.getColumn() >= 0 && pos.getColumn() < width && pos.getRow() >= 0 && pos.getRow() < height;
     }
 
-    public boolean isObstacle(BoardPosition pos)
-    {
+    public boolean isObstacle(BoardPosition pos) {
         if (!isCorrectPosition(pos)) throw new AssertionError();
         for (Integer obj : cellObjects[pos.getRow()][pos.getColumn()])
             if (objects.get(obj).isObstacle(pos)) return true;
