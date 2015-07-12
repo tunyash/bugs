@@ -39,7 +39,7 @@ public class Board {
         bugs.add(new Bug(BugAction.appear(pos), color));
     }
 
-    public void runGame() {
+    public void runGame() throws Exception {
         currentTime = 0;
         for (int it = 0; it < IT_COUNT; it++) {
             for (Bug bug : bugs)
@@ -52,6 +52,9 @@ public class Board {
             for (BoardObject obj : objects)
                 obj.onTimerTick(this);
             currentTime++;
+            System.out.print(this);
+            Thread.currentThread().sleep(900);
+            //Runtime.getRuntime().exec("clear");
         }
     }
 
@@ -77,6 +80,10 @@ public class Board {
 
     public int getScore() {
         return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public ArrayList<BoardObject> getObjects() {
@@ -109,7 +116,7 @@ public class Board {
             for (BoardPosition pos : obj.getOccupied())
                 mArea[pos.getRow()][pos.getColumn()] = obj.toString();
         for (Bug bug : bugs)
-            if (bug.getCurrentPosition() != null)
+            if (bug.getCurrentPosition() != null && bug.getLifePoints() > 0)
                 mArea[bug.getCurrentPosition().getRow()][bug.getCurrentPosition().getColumn()] = bug.toString();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++)
@@ -119,10 +126,15 @@ public class Board {
         return area.toString();
     }
 
+    public static final int scoreForBug = 10;
+
     private int width;
     private int height;
     private int currentTime;
     private final int IT_COUNT = 200;
+
+
+
     private int score;
     private ArrayList<BoardObject> objects;
     private ArrayList<Bug> bugs;

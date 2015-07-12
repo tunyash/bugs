@@ -17,8 +17,10 @@ public class Trap extends BoardObject {
 
     @Override
     public void onBugStep(BoardPosition stepPos, Bug bug, Board board) {
-        if (bug.getColor() == color)
+        if (bug.getColor() == color) {
             bug.pushOrder(BugAction.kill());
+            board.setScore(board.getScore() + Board.scoreForBug);
+        }
     }
 
     private final int color;
@@ -26,6 +28,6 @@ public class Trap extends BoardObject {
     @Override
     public String toString()
     {
-        return "T";
+        return ColoredString.getColored(color,"T");
     }
 }

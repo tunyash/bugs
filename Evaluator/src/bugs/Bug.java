@@ -75,7 +75,7 @@ public class Bug {
     @Override
     public String toString()
     {
-        return "B";
+        return ColoredString.getColored(this.color,"B");
     }
 
     private BoardPosition currentPosition;
