@@ -5,6 +5,8 @@ import java.util.ArrayList;
 /**
  * Created by tunyash on 7/11/15.
  */
+
+
 public class Board {
 
     public Board(int width, int height)
