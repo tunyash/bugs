@@ -13,11 +13,13 @@ public class Bug {
 
     public Bug(BugAction startAction, int color) {
         orders = new ArrayList<>();
+        lifePoints = 100;
         pushOrder(startAction);
         this.color = color;
     }
     public Bug(BugAction startAction) {
         orders = new ArrayList<>();
+        lifePoints = 100;
         pushOrder(startAction);
         color = -1;
     }
@@ -25,10 +27,13 @@ public class Bug {
     public Bug(int color) {
         orders = new ArrayList<>();
         this.color = color;
+        lifePoints = 100;
     }
 
     public Bug() {
         orders = new ArrayList<>();
+        lifePoints = 100;
+        color = -1;
     }
 
     public BoardPosition getCurrentPosition() {
@@ -52,6 +57,7 @@ public class Bug {
     }
 
     public void evaluateOrders(Board board) {
+        //System.out.println("Evaluating orders");
         ArrayList<BugAction> restOrders = new ArrayList<>();
         for (BugAction act : orders)
             if (lifePoints > 0 && !act.evaluate(board, this)) restOrders.add(act);
@@ -65,6 +71,11 @@ public class Bug {
 
     public void setColor(int color) {
         this.color = color;
+    }
+    @Override
+    public String toString()
+    {
+        return "B";
     }
 
     private BoardPosition currentPosition;

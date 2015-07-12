@@ -14,7 +14,10 @@ public class Board {
         this.height = height;
         objects = new ArrayList<>();
         bugs = new ArrayList<>();
-        cellObjects = new ArrayList[width][height];
+        cellObjects = new ArrayList[height][width];
+        for (int i = 0; i < height; i++)
+            for (int j = 0; j < width; j++)
+                cellObjects[i][j] = new ArrayList<>();
         currentTime = 0;
         score = 0;
     }
@@ -22,8 +25,10 @@ public class Board {
     public void addObject(BoardObject obj) {
         int id = objects.size();
         objects.add(obj);
-        for (BoardPosition pos : obj.getOccupied())
+        for (BoardPosition pos : obj.getOccupied()) {
+            System.out.printf("%d %d\n", pos.getRow(), pos.getColumn());
             cellObjects[pos.getRow()][pos.getColumn()].add(id);
+        }
     }
 
     public void addBug(Bug bug) {
@@ -91,6 +96,27 @@ public class Board {
         for (Integer obj : cellObjects[pos.getRow()][pos.getColumn()])
             if (objects.get(obj).isObstacle(pos)) return true;
         return false;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder area = new StringBuilder();
+        String[][] mArea = new String[height][width];
+        for (int i = 0; i < height; i++)
+            for (int j = 0; j < width; j++)
+                mArea[i][j] = ".";
+        for (BoardObject obj : objects)
+            for (BoardPosition pos : obj.getOccupied())
+                mArea[pos.getRow()][pos.getColumn()] = obj.toString();
+        for (Bug bug : bugs)
+            if (bug.getCurrentPosition() != null)
+                mArea[bug.getCurrentPosition().getRow()][bug.getCurrentPosition().getColumn()] = bug.toString();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++)
+                area.append(mArea[i][j]);
+            area.append("\n");
+        }
+        return area.toString();
     }
 
     private int width;

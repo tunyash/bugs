@@ -40,12 +40,12 @@ public enum Direction {
         }
         @Override
         public int getDc() {
-            return 1;
+            return 0;
         }
 
         @Override
         public int getDr() {
-            return 0;
+            return 1;
         }
     }, LEFT{
         @Override

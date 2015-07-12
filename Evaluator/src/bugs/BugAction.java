@@ -32,8 +32,11 @@ abstract public class BugAction {
              */
             @Override
             public boolean evaluate(Board board, Bug bug) {
+               // System.out.println("Force to go");
                 BoardPosition newPos = bug.getCurrentPosition().move(direction);
+               // System.out.println(board.isCorrectPosition(newPos));
                 if (!board.isCorrectPosition(newPos)) return true;
+               // System.out.println(board.isObstacle(newPos));
                 if (board.isObstacle(newPos)) return true;
                 bug.setCurrentPosition(newPos);
                 return true;

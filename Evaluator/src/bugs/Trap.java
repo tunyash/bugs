@@ -22,4 +22,10 @@ public class Trap extends BoardObject {
     }
 
     private final int color;
+
+    @Override
+    public String toString()
+    {
+        return "T";
+    }
 }

@@ -11,6 +11,12 @@ public class SimpleObstacle extends BoardObject{
     }
     @Override
     public boolean isObstacle(BoardPosition pos) {
+        //System.out.printf("%d %d ?? %d %d\n", pos.getRow(), pos.getColumn(), occupied[0].getRow(), occupied[0].getColumn());
         return (pos.compareTo(occupied[0]) == 0);
+    }
+    @Override
+    public String toString()
+    {
+        return "#";
     }
 }
