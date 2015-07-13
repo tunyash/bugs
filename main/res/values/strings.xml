@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Bugs</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="HelloMessage">New Text</string>
+    <string name="startButton">New Button</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="incomeMessage">New Text</string>
+</resources>
