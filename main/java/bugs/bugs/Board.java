@@ -1,4 +1,9 @@
-package bugs;
+package bugs.bugs;
+
+import android.graphics.Color;
+import android.support.v7.app.ActionBarActivity;
+import android.widget.Button;
+import android.widget.GridLayout;
 
 import java.util.ArrayList;
 
@@ -9,7 +14,8 @@ import java.util.ArrayList;
 
 public class Board {
 
-    public Board(int width, int height) {
+    public Board(GridLayout board, int width, int height) {
+        this.board = board;
         this.width = width;
         this.height = height;
         objects = new ArrayList<BoardObject>();
@@ -39,9 +45,7 @@ public class Board {
         bugs.add(new Bug(BugAction.appear(pos), color));
     }
 
-    public void runGame() throws Exception {
-        currentTime = 0;
-        for (int it = 0; it < IT_COUNT; it++) {
+    public String[][] runGame() throws Exception {
             for (Bug bug : bugs)
                 bug.evaluateOrders(this);
             for (Bug bug : bugs)
@@ -51,11 +55,10 @@ public class Board {
                 }
             for (BoardObject obj : objects)
                 obj.onTimerTick(this);
-            currentTime++;
-            System.out.print(this);
+
             Thread.currentThread().sleep(900);
+            return makeString();
             //Runtime.getRuntime().exec("clear");
-        }
     }
 
     public int getWidth() {
@@ -105,8 +108,7 @@ public class Board {
         return false;
     }
 
-    @Override
-    public String toString() {
+    private String[][] makeString() {
         StringBuilder area = new StringBuilder();
         String[][] mArea = new String[height][width];
         for (int i = 0; i < height; i++)
@@ -118,13 +120,7 @@ public class Board {
         for (Bug bug : bugs)
             if (bug.getCurrentPosition() != null && bug.getLifePoints() > 0)
                 mArea[bug.getCurrentPosition().getRow()][bug.getCurrentPosition().getColumn()] = bug.toString();
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++)
-                area.append(mArea[i][j]);
-            area.append("\n");
-        }
-        area.append("\n\n");
-        return area.toString();
+        return mArea;
     }
 
     public static final int scoreForBug = 10;
@@ -132,10 +128,10 @@ public class Board {
     private int width;
     private int height;
     private int currentTime;
-    private final int IT_COUNT = 200;
+    private final int IT_COUNT = 10;
 
 
-
+    private GridLayout board;
     private int score;
     private ArrayList<BoardObject> objects;
     private ArrayList<Bug> bugs;

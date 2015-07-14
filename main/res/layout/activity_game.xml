@@ -21,7 +21,8 @@
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/scrollView">
+            android:id="@+id/scrollView"
+            android:clickable="false">
 
             <GridLayout
                 android:layout_width="match_parent"
@@ -32,7 +33,9 @@
                 android:nestedScrollingEnabled="true"
                 android:clickable="false"
                 android:columnOrderPreserved="false"
-                android:focusable="false" />
+                android:focusable="false" >
+
+            </GridLayout>
         </ScrollView>
 
 
