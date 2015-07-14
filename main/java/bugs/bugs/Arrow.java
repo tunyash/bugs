@@ -1,4 +1,4 @@
-package bugs;
+package bugs.bugs;
 
 /**
  * Created by tunyash on 7/12/15.

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_evaluator" default="compile.module.evaluator">
+  <dirname property="module.evaluator.basedir" file="${ant.file.module_evaluator}"/>
+  
+  <property name="module.jdk.home.evaluator" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.evaluator" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.evaluator" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.evaluator" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  
+  <property name="evaluator.output.dir" value="${module.evaluator.basedir}/out/production/Evaluator"/>
+  <property name="evaluator.testoutput.dir" value="${module.evaluator.basedir}/out/test/Evaluator"/>
+  
+  <path id="evaluator.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="evaluator.module.production.classpath">
+    <path refid="${module.jdk.classpath.evaluator}"/>
+  </path>
+  
+  <path id="evaluator.runtime.production.module.classpath">
+    <pathelement location="${evaluator.output.dir}"/>
+  </path>
+  
+  <path id="evaluator.module.classpath">
+    <path refid="${module.jdk.classpath.evaluator}"/>
+    <pathelement location="${evaluator.output.dir}"/>
+  </path>
+  
+  <path id="evaluator.runtime.module.classpath">
+    <pathelement location="${evaluator.testoutput.dir}"/>
+    <pathelement location="${evaluator.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.evaluator">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.evaluator">
+    <patternset refid="excluded.from.module.evaluator"/>
+  </patternset>
+  
+  <path id="evaluator.module.sourcepath">
+    <dirset dir="${module.evaluator.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.evaluator" depends="compile.module.evaluator.production,compile.module.evaluator.tests" description="Compile module Evaluator"/>
+  
+  <target name="compile.module.evaluator.production" depends="register.custom.compilers" description="Compile module Evaluator; production classes">
+    <mkdir dir="${evaluator.output.dir}"/>
+    <javac2 destdir="${evaluator.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.evaluator}/javac">
+      <compilerarg line="${compiler.args.evaluator}"/>
+      <bootclasspath refid="evaluator.module.bootclasspath"/>
+      <classpath refid="evaluator.module.production.classpath"/>
+      <src refid="evaluator.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.evaluator"/>
+    </javac2>
+    
+    <copy todir="${evaluator.output.dir}">
+      <fileset dir="${module.evaluator.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.evaluator.tests" depends="register.custom.compilers,compile.module.evaluator.production" description="compile module Evaluator; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.evaluator" description="cleanup module">
+    <delete dir="${evaluator.output.dir}"/>
+    <delete dir="${evaluator.testoutput.dir}"/>
+  </target>
+</project>

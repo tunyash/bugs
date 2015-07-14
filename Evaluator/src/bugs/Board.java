@@ -53,8 +53,15 @@ public class Board {
                 obj.onTimerTick(this);
             currentTime++;
             System.out.print(this);
-            Thread.currentThread().sleep(900);
-            //Runtime.getRuntime().exec("clear");
+
+           // Process proc = Runtime.getRuntime().exec("clear");
+           // System.out.println(proc.waitFor());
+
+            Thread.currentThread().sleep(1500);
+            for (int ii = 0; ii < 100; ii++)
+                System.out.println();
+
+
         }
     }
 

@@ -6,6 +6,7 @@ package bugs;
 public class Trap extends BoardObject {
     public Trap(BoardPosition pos, int color)
     {
+        super(BoardObject.upperOrder);
         this.color = color;
         occupied = new BoardPosition[1];
         occupied[0] = pos;

@@ -6,6 +6,7 @@ package bugs;
 public class SimpleObstacle extends BoardObject{
     public SimpleObstacle(BoardPosition pos)
     {
+        super(BoardObject.upperOrder);
         this.occupied = new BoardPosition[1];
         occupied[0] = pos;
     }

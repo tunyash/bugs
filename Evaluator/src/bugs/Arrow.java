@@ -6,6 +6,7 @@ package bugs;
 public class Arrow extends BoardObject {
     public Arrow(BoardPosition pos, Direction direction)
     {
+        super(BoardObject.floorOrder);
         occupied = new BoardPosition[1];
         occupied[0] = pos;
         this.direction = direction;

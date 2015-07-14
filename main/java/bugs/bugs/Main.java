@@ -1,4 +1,4 @@
-package bugs;
+package bugs.bugs;
 
 public class Main {
 

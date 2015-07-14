@@ -4,8 +4,11 @@ package bugs;
  * Created by tunyash on 7/11/15.
  */
 
-abstract public class BugAction {
-
+abstract public class BugAction implements Comparable<BugAction> {
+     public BugAction(int priority)
+     {
+         this.priority = priority;
+     }
     /**
      *
      * @param board
@@ -15,15 +18,32 @@ abstract public class BugAction {
 
     abstract public boolean evaluate(Board board, Bug bug);
 
+    public int getPriority() {
+        return priority;
+    }
 
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    protected int priority;
+    public int compareTo(BugAction bugAction) {
+        if (this.priority < bugAction.priority) return 1;
+        if (this.priority > bugAction.priority) return -1;
+        return 0;
+    }
     /**
      *
      * @param direction to move bug
      * @return BugAction which moves bug to direction if it's possible
      */
+    public static final int movementPriority = 10;
+    public static final int primaryPriority = 0;
+
     public static BugAction forceToGo(final Direction direction)
     {
-        return new BugAction() {
+        return new BugAction(BugAction.movementPriority) {
+
             /**
              *
              * @param board -- current board
@@ -51,7 +71,7 @@ abstract public class BugAction {
      */
     public static BugAction appear(final BoardPosition pos)
     {
-        return new BugAction() {
+        return new BugAction(BugAction.primaryPriority) {
             @Override
             public boolean evaluate(Board board, Bug bug) {
                 if (board.isObstacle(pos)) return false;
@@ -67,7 +87,7 @@ abstract public class BugAction {
      */
     public static BugAction kill()
     {
-        return new BugAction() {
+        return new BugAction(BugAction.primaryPriority) {
             @Override
             public boolean evaluate(Board board, Bug bug) {
                 bug.setLifePoints(0);

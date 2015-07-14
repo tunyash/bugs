@@ -1,6 +1,7 @@
 package bugs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by tunyash on 7/11/15.
@@ -59,6 +60,7 @@ public class Bug {
     public void evaluateOrders(Board board) {
         //System.out.println("Evaluating orders");
         ArrayList<BugAction> restOrders = new ArrayList<>();
+        Collections.sort(restOrders);
         for (BugAction act : orders)
             if (lifePoints > 0 && !act.evaluate(board, this)) restOrders.add(act);
         orders = restOrders;

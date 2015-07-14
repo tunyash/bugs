@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Evaluator:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Evaluator_jar</output-path>
+    <root id="archive" name="Evaluator.jar">
+      <element id="module-output" name="Evaluator" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>
