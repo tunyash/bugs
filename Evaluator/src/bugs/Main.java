@@ -294,72 +294,20 @@ public class Main {
         DocumentBuilder builder = factory.newDocumentBuilder();
         org.w3c.dom.Document doc = builder.parse(ClassLoader.getSystemResourceAsStream("round1.xml"));
 */
-        Board myBoard = new Board(10, 10);
-
+        Board myBoard = Board.loadFromFile(new File("round1.xml"));
         MainForm form = new MainForm(myBoard);
         form.setVisible(true);
 
-        SimpleObstacle a = new SimpleObstacle(new BoardPosition(0, 1));
-        new GraphicsSimpleObstacleDrawer(a);
-        myBoard.addObject(a);
-        a = new SimpleObstacle(new BoardPosition(1, 3));
-        new GraphicsSimpleObstacleDrawer(a);
-        myBoard.addObject(a);
-        a = new SimpleObstacle(new BoardPosition(2, 4));
-        new GraphicsSimpleObstacleDrawer(a);
-        myBoard.addObject(a);
 
-        Arrow b = new Arrow(new BoardPosition(0, 0), Direction.DOWN);
-        new GraphicsArrowDrawer(b);
-        myBoard.addObject(b);
-        b = new Arrow(new BoardPosition(1, 0), Direction.RIGHT);
-        new GraphicsArrowDrawer(b);
-        myBoard.addObject(b);
-        b = new Arrow(new BoardPosition(1, 2), Direction.UP);
-        new GraphicsArrowDrawer(b);
-        myBoard.addObject(b);
-        b = new Arrow(new BoardPosition(0, 2), Direction.RIGHT);
-        new GraphicsArrowDrawer(b);
-        myBoard.addObject(b);
-        b = new Arrow(new BoardPosition(2, 0), Direction.RIGHT);
-        new GraphicsArrowDrawer(b);
-        myBoard.addObject(b);
-        b = new Arrow(new BoardPosition(2, 1), Direction.DOWN);
-        new GraphicsArrowDrawer(b);
-        myBoard.addObject(b);
-        b = new Arrow(new BoardPosition(4, 1), Direction.RIGHT);
-        new GraphicsArrowDrawer(b);
-        myBoard.addObject(b);
-        b = new Arrow(new BoardPosition(4, 2), Direction.UP);
-        new GraphicsArrowDrawer(b);
-        myBoard.addObject(b);
-
-
-        Trap c = new Trap(new BoardPosition(2, 2), 2);
-        new GraphicsTrapDrawer(c);
-        myBoard.addObject(c);
-
-
-        c = new Trap(new BoardPosition(0, 4), 1);
-        new GraphicsTrapDrawer(c);
-        myBoard.addObject(c);
-
-        Bug d = new Bug(BugAction.appear(new BoardPosition(0,0)), 1);
-        new GraphicsBugDrawer(d);
-        myBoard.addBug(d);
-        d = new Bug(BugAction.appear(new BoardPosition(2,0)), 0);
-        new GraphicsBugDrawer(d);
-        myBoard.addBug(d);
-
-       /* Area area = new Area(myBoard.getHeight(), myBoard.getWidth());
         for (BoardObject object: myBoard.getObjects()) {
-            ConsoleBoardObjectDrawer draw0 = new ConsoleBoardObjectDrawer(object);
-            draw0.area = area;
+            if (object.getType().equals("Arrow")) new GraphicsArrowDrawer((Arrow)object);
+            else if (object.getType().equals("Trap")) new GraphicsTrapDrawer((Trap)object);
+            else if (object.getType().equals("SimpleObstacle")) new GraphicsSimpleObstacleDrawer((SimpleObstacle)object);
         }
         for (Bug bug: myBoard.getBugs()) {
-            ConsoleBugDrawer draw0 = new ConsoleBugDrawer(bug);
-            draw0.area = area;
-        }*/
+            new GraphicsBugDrawer(bug);
+
+        }
 
 
 
@@ -368,7 +316,7 @@ public class Main {
             myBoard.drawOneRound();
            // System.out.print(area);
             form.repaint();
-            Thread.currentThread().sleep(2000);
+            Thread.currentThread().sleep(800);
         }
         System.out.printf("Score: %d\n", myBoard.getScore());
     }

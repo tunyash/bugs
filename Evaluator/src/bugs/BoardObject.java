@@ -1,11 +1,14 @@
 package bugs;
 
+import org.w3c.dom.Node;
+
 /**
  * Created by tunyash on 7/11/15.
  * Static object on board
  */
 
 abstract public class BoardObject {
+
 
 
     public BoardObject(int displayOrder) {
@@ -15,6 +18,9 @@ abstract public class BoardObject {
     public BoardPosition[] getOccupied() {
         return occupied;
     }
+
+    public abstract void loadMyselfFromNode(Node node);
+    public abstract String getType();
 
     public void onBugStep(BoardPosition stepPos, Bug bug, Board board) {
         // do nothing
@@ -43,6 +49,15 @@ abstract public class BoardObject {
 
     public BoardObjectDrawer getObserver() {
         return observer;
+    }
+
+    public static BoardObject loadFromNode(Node node) throws Exception {
+        String className = node.getAttributes().getNamedItem("type").getNodeValue();
+        Class obj = Class.forName("bugs." + className);
+        BoardObject realObject = (BoardObject)obj.newInstance();
+        realObject.loadMyselfFromNode(node);
+        return realObject;
+        //return null;
     }
 
     public void setObserver(BoardObjectDrawer observer) {

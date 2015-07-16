@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<board height = "10" width ="9">
+   <object type = "Trap" row = "0" column = "0" color = "1"></object>
+   <object type = "Arrow" row = "3" column="0" direction = "RIGHT"></object>
+    <object type = "Arrow" row = "3" column="3" direction = "UP"></object>
+    <object type = "Arrow" row = "0" column="3" direction = "LEFT"></object>
+    <bug row = "3" column = "0" color = "1"></bug>
+</board>

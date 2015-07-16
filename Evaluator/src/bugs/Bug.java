@@ -1,5 +1,8 @@
 package bugs;
 
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -35,6 +38,15 @@ public class Bug {
         orders = new ArrayList<>();
         lifePoints = 100;
         color = -1;
+    }
+
+    public static Bug loadFromNode(Node node)
+    {
+        NamedNodeMap map = node.getAttributes();
+        int row = Integer.parseInt(map.getNamedItem("row").getNodeValue());
+        int column = Integer.parseInt(map.getNamedItem("column").getNodeValue());
+        int color = Integer.parseInt(map.getNamedItem("color").getNodeValue());
+        return new Bug(BugAction.appear(new BoardPosition(row, column)), color);
     }
 
     public BoardPosition getCurrentPosition() {

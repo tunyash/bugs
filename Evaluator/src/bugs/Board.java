@@ -1,5 +1,14 @@
 package bugs;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -157,6 +166,35 @@ public class Board {
             area.append("\n");
         }
         return area.toString();
+    }
+
+
+    public static Board loadFromFile(File file) throws Exception
+    {
+        DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+        f.setValidating(false);
+        DocumentBuilder builder = f.newDocumentBuilder();
+        Document doc = builder.parse(file);
+        Node root = doc.getFirstChild();
+        NamedNodeMap attr = root.getAttributes();
+        int height = Integer.parseInt(attr.getNamedItem("height").getNodeValue());
+        int width = Integer.parseInt(attr.getNamedItem("width").getNodeValue());
+        //System.out.printf("%d %d\n", height, width);
+        Board result = new Board(width, height);
+        for (int i = 0; i < root.getChildNodes().getLength(); i++)
+        {
+            Node cur = root.getChildNodes().item(i);
+            if (cur.getNodeName().equals("object"))
+            {
+                result.addObject(BoardObject.loadFromNode(cur));
+            }
+            if (cur.getNodeName().equals("bug"))
+            {
+                result.addBug(Bug.loadFromNode(cur));
+            }
+
+        }
+        return result;
     }
 
     public boolean isLost() {
