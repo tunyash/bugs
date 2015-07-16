@@ -176,6 +176,15 @@ public class Board {
         DocumentBuilder builder = f.newDocumentBuilder();
         Document doc = builder.parse(file);
         Node root = doc.getFirstChild();
+        return Board.loadFromNode(root);
+    }
+    public static Board loadFromNode(Node root) throws Exception
+    {
+       /* DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+        f.setValidating(false);
+        DocumentBuilder builder = f.newDocumentBuilder();
+        Document doc = builder.parse(file);
+        Node root = doc.getFirstChild();*/
         NamedNodeMap attr = root.getAttributes();
         int height = Integer.parseInt(attr.getNamedItem("height").getNodeValue());
         int width = Integer.parseInt(attr.getNamedItem("width").getNodeValue());

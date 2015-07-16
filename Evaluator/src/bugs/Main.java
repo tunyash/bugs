@@ -214,7 +214,7 @@ class MainForm extends JFrame
         super();
         add(new Surface(area));
         setTitle("Bugs");
-        setSize(350, 250);
+        setSize(500, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -316,7 +316,7 @@ public class Main {
             myBoard.drawOneRound();
            // System.out.print(area);
             form.repaint();
-            Thread.currentThread().sleep(800);
+            Thread.currentThread().sleep(200);
         }
         System.out.printf("Score: %d\n", myBoard.getScore());
     }

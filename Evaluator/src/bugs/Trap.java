@@ -25,7 +25,7 @@ public class Trap extends BoardObject {
 
     @Override
     public void loadMyselfFromNode(Node node) {
-        System.out.println("loaded Trap");
+        //System.out.println("loaded Trap");
         int row = Integer.parseInt(node.getAttributes().getNamedItem("row").getNodeValue());
         int column = Integer.parseInt(node.getAttributes().getNamedItem("column").getNodeValue());
         int color = Integer.parseInt(node.getAttributes().getNamedItem("color").getNodeValue());
