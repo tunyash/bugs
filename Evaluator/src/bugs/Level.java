@@ -31,7 +31,7 @@ public class Level {
         bugs.add(new Pair<>(pos, color));
     }
 
-    void addAditionalObject(BoardObjectConstructor object, Integer count)
+    void addAditionalObject(String object, Integer count)
     {
         additionalObjects.add(new Pair<>(object, count));
     }
@@ -44,11 +44,22 @@ public class Level {
         this.initial = initial;
     }
 
-    public ArrayList<Pair<BoardObjectConstructor, Integer>> getAdditionalObjects() {
-        return additionalObjects;
+    public boolean isObjectAvailable(String name)
+    {
+        for (Pair<String,Integer> pair : additionalObjects)
+            if (pair.first.equals(name) && pair.second.compareTo(0) == 1) return true;
+        return false;
     }
 
+    public void decrease(String name)
+    {
+        for (Pair<String,Integer> pair : additionalObjects)
+            if (pair.first.equals(name)) pair.second -= 1;
+    }
 
+    public ArrayList<Pair<String, Integer>> getAdditionalObjects() {
+        return additionalObjects;
+    }
 
     public void setBugs(ArrayList<Pair<BoardPosition, Integer>> bugs) {
         this.bugs = bugs;
@@ -74,10 +85,10 @@ public class Level {
                 int color = Integer.parseInt(cur.getAttributes().getNamedItem("color").getNodeValue());
                 result.addBug(new BoardPosition(row, column), color);
             }
-            if (cur.getNodeName().equals("objectConstructor"))
+            if (cur.getNodeName().equals("objectType"))
             {
                 int count = Integer.parseInt(cur.getAttributes().getNamedItem("count").getNodeValue());
-                result.addAditionalObject(BoardObjectConstructor.loadFromNode(cur), count);
+                result.addAditionalObject(cur.getAttributes().getNamedItem("name").getNodeValue(), count);
             }
             if (cur.getNodeName().equals("available"))
             {
@@ -113,7 +124,7 @@ public class Level {
     }
 
     private Board initial;
-    private ArrayList<Pair<BoardObjectConstructor, Integer>> additionalObjects;
+    private ArrayList<Pair<String, Integer>> additionalObjects;
     private ArrayList<Pair<BoardPosition, Integer>> bugs;
     private boolean[][] available;
 
