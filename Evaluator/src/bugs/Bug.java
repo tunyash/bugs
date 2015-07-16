@@ -64,6 +64,21 @@ public class Bug {
         for (BugAction act : orders)
             if (lifePoints > 0 && !act.evaluate(board, this)) restOrders.add(act);
         orders = restOrders;
+        if (movementActive)
+        {
+            moveBug(board, movementDirection);
+        }
+    }
+
+    public void moveBug(Board board, Direction direction)
+    {
+        BoardPosition newPos = this.getCurrentPosition().move(direction);
+        // System.out.println(board.isCorrectPosition(newPos));
+        if (!board.isCorrectPosition(newPos)) return;
+        // System.out.println(board.isObstacle(newPos));
+        if (board.isObstacle(newPos)) return;
+        this.setCurrentPosition(newPos);
+        return;
     }
 
 
@@ -74,6 +89,35 @@ public class Bug {
     public void setColor(int color) {
         this.color = color;
     }
+
+    public boolean isMovementActive() {
+        return movementActive;
+    }
+
+    public void setMovementActive(boolean movementActive) {
+        this.movementActive = movementActive;
+    }
+
+    public Direction getMovementDirection() {
+        return movementDirection;
+    }
+
+    public void setMovementDirection(Direction movementDirection) {
+        this.movementDirection = movementDirection;
+    }
+
+    public BugDrawer getObserver() {
+        return observer;
+    }
+
+    public void setObserver(BugDrawer observer) {
+        this.observer = observer;
+    }
+
+    public void notifyObserver() {
+        if (observer != null) observer.redraw();
+    }
+
     @Override
     public String toString()
     {
@@ -85,6 +129,12 @@ public class Bug {
     private int lifePoints;
 
 
+
+
+    private boolean movementActive = false;
+    private Direction movementDirection;
+
+    private BugDrawer observer;
     private int color;
 
 }

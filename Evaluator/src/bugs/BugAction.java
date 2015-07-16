@@ -40,6 +40,8 @@ abstract public class BugAction implements Comparable<BugAction> {
     public static final int movementPriority = 10;
     public static final int primaryPriority = 0;
 
+
+
     public static BugAction forceToGo(final Direction direction)
     {
         return new BugAction(BugAction.movementPriority) {
@@ -50,19 +52,19 @@ abstract public class BugAction implements Comparable<BugAction> {
              * @param bug -- bug to move
              * @return always returns true
              */
+
             @Override
             public boolean evaluate(Board board, Bug bug) {
-               // System.out.println("Force to go");
-                BoardPosition newPos = bug.getCurrentPosition().move(direction);
-               // System.out.println(board.isCorrectPosition(newPos));
-                if (!board.isCorrectPosition(newPos)) return true;
-               // System.out.println(board.isObstacle(newPos));
-                if (board.isObstacle(newPos)) return true;
-                bug.setCurrentPosition(newPos);
+                bug.setMovementActive(true);
+                bug.setMovementDirection(direction);
                 return true;
             }
         };
     }
+
+
+
+
 
     /**
      * Action to put bug to the board

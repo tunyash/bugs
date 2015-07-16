@@ -7,6 +7,7 @@ package bugs;
 
 abstract public class BoardObject {
 
+
     public BoardObject(int displayOrder) {
         this.displayOrder = displayOrder;
     }
@@ -22,6 +23,7 @@ abstract public class BoardObject {
     public void onTimerTick(Board board) {
         // do nothing
     }
+
 
     /**
      * @param pos should be one of occupied positions of object
@@ -39,11 +41,22 @@ abstract public class BoardObject {
         this.displayOrder = displayOrder;
     }
 
+    public BoardObjectDrawer getObserver() {
+        return observer;
+    }
+
+    public void setObserver(BoardObjectDrawer observer) {
+        this.observer = observer;
+    }
+
+    public void notifyObserver() {
+        if (observer != null) observer.redraw();
+    }
+
     public static int upperOrder = 1;
     public static int floorOrder = 0;
 
     protected BoardPosition[] occupied;
-
-
     protected int displayOrder;
+    protected BoardObjectDrawer observer;
 }

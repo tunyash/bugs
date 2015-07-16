@@ -1,6 +1,8 @@
 package bugs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Created by tunyash on 7/11/15.
@@ -41,29 +43,51 @@ public class Board {
 
     public void runGame() throws Exception {
         currentTime = 0;
-        for (int it = 0; it < IT_COUNT; it++) {
-            for (Bug bug : bugs)
-                bug.evaluateOrders(this);
-            for (Bug bug : bugs)
-                if (bug.getLifePoints() > 0) {
-                    for (Integer obj : cellObjects[bug.getCurrentPosition().getRow()][bug.getCurrentPosition().getColumn()])
-                        objects.get(obj).onBugStep(bug.getCurrentPosition(), bug, this);
-                }
-            for (BoardObject obj : objects)
-                obj.onTimerTick(this);
-            currentTime++;
-            System.out.print(this);
-
+        while (runOneRound())
+        {
+           // System.out.print(this);
+            drawOneRound();
            // Process proc = Runtime.getRuntime().exec("clear");
            // System.out.println(proc.waitFor());
 
-            Thread.currentThread().sleep(1500);
-            for (int ii = 0; ii < 100; ii++)
-                System.out.println();
-
-
+           // Thread.currentThread().sleep(150);
+            //for (int ii = 0; ii < 100; ii++)
+            //    System.out.println();
         }
     }
+
+    public boolean runOneRound()
+    {
+        for (Bug bug : bugs)
+            bug.evaluateOrders(this);
+        for (Bug bug : bugs)
+            if (bug.getLifePoints() > 0) {
+                for (Integer obj : cellObjects[bug.getCurrentPosition().getRow()][bug.getCurrentPosition().getColumn()])
+                    objects.get(obj).onBugStep(bug.getCurrentPosition(), bug, this);
+            }
+        for (BoardObject obj : objects)
+            obj.onTimerTick(this);
+        currentTime++;
+        return currentTime < IT_COUNT;
+    }
+
+    public void drawOneRound()
+    {
+        Integer[] ids = new Integer[objects.size()];
+        for (int i = 0; i < ids.length; i++) ids[i] = i;
+        Arrays.sort(ids, new Comparator<Integer>(){
+
+            @Override
+            public int compare(Integer t0, Integer t1) {
+                if (objects.get(t0).getDisplayOrder() < objects.get(t1).getDisplayOrder()) return -1;
+                if (objects.get(t0).getDisplayOrder() > objects.get(t1).getDisplayOrder()) return 1;
+                return 0;
+            }
+        });
+        for (int i = 0; i < ids.length; i++) objects.get(ids[i]).notifyObserver();
+        for (Bug bug: bugs) bug.notifyObserver();
+    }
+
 
     public int getWidth() {
         return width;
