@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -142,6 +143,17 @@ class GraphicsTrapDrawer extends GraphicsBoardObjectDrawer
         int cellY = cornerY + row * cellSide;
         try {
             BufferedImage img = ImageIO.read(new File("trap.png"));
+            WritableRaster raster = img.getRaster();
+            for (int i = 0; i < raster.getHeight(); i++)
+                for (int j = 0; j < raster.getWidth(); j++)
+                {
+                    int[] px = raster.getPixel(j,i, (int[]) null);
+                    px[0] = (int)((double)BugColor.byNumber(obs.getColor()).getRed()*((double)px[0]/255));
+                    px[1] = (int)((double)BugColor.byNumber(obs.getColor()).getGreen()*((double)px[1]/255));
+                    px[2] = (int)((double)BugColor.byNumber(obs.getColor()).getBlue()*((double)px[2]/255));
+
+                    raster.setPixel(j,i, px);
+                }
             surface.drawImage(img, cellX, cellY, cellSide, cellSide, null);
         } catch (Exception e)
         {
@@ -172,6 +184,20 @@ class GraphicsBugDrawer extends BugDrawer
         int cellY = cornerY + row * cellSide;
         try {
             BufferedImage img = ImageIO.read(new File("bug.png"));
+            WritableRaster raster = img.getRaster();
+            for (int i = 0; i < raster.getHeight(); i++)
+                for (int j = 0; j < raster.getWidth(); j++)
+                {
+
+                    int[] px = raster.getPixel(j,i, (int[]) null);
+
+                    px[0] = (int)((double)BugColor.byNumber(observable.getColor()).getRed()*((double)px[0]/255));
+                    px[1] = (int)((double)BugColor.byNumber(observable.getColor()).getGreen()*((double)px[1]/255));
+                    px[2] = (int)((double)BugColor.byNumber(observable.getColor()).getBlue()*((double)px[2]/255));
+
+
+                    raster.setPixel(j,i, px);
+                }
             surface.drawImage(img, cellX, cellY, cellSide, cellSide, null);
         } catch (Exception e)
         {
@@ -187,7 +213,7 @@ class MainForm extends JFrame
     {
         super();
         add(new Surface(area));
-        setTitle("Lines");
+        setTitle("Bugs");
         setSize(350, 250);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -268,7 +294,7 @@ public class Main {
         DocumentBuilder builder = factory.newDocumentBuilder();
         org.w3c.dom.Document doc = builder.parse(ClassLoader.getSystemResourceAsStream("round1.xml"));
 */
-        Board myBoard = new Board(5, 6);
+        Board myBoard = new Board(10, 10);
 
         MainForm form = new MainForm(myBoard);
         form.setVisible(true);
@@ -321,7 +347,7 @@ public class Main {
         Bug d = new Bug(BugAction.appear(new BoardPosition(0,0)), 1);
         new GraphicsBugDrawer(d);
         myBoard.addBug(d);
-        d = new Bug(BugAction.appear(new BoardPosition(2,0)), 2);
+        d = new Bug(BugAction.appear(new BoardPosition(2,0)), 0);
         new GraphicsBugDrawer(d);
         myBoard.addBug(d);
 
@@ -342,7 +368,7 @@ public class Main {
             myBoard.drawOneRound();
            // System.out.print(area);
             form.repaint();
-            Thread.currentThread().sleep(800);
+            Thread.currentThread().sleep(2000);
         }
         System.out.printf("Score: %d\n", myBoard.getScore());
     }

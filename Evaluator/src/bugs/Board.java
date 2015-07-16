@@ -22,6 +22,7 @@ public class Board {
                 cellObjects[i][j] = new ArrayList<>();
         currentTime = 0;
         score = 0;
+        lost = false;
     }
 
     public void addObject(BoardObject obj) {
@@ -58,6 +59,7 @@ public class Board {
 
     public boolean runOneRound()
     {
+        if (lost) return false;
         for (Bug bug : bugs)
             bug.evaluateOrders(this);
         for (Bug bug : bugs)
@@ -157,11 +159,23 @@ public class Board {
         return area.toString();
     }
 
+    public boolean isLost() {
+        return lost;
+    }
+
+    public void setLost(boolean lost) {
+        this.lost = lost;
+    }
+
     public static final int scoreForBug = 10;
 
     private int width;
     private int height;
     private int currentTime;
+
+
+
+    private boolean lost;
     private final int IT_COUNT = 200;
 
 

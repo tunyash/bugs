@@ -22,6 +22,11 @@ public class Trap extends BoardObject {
             bug.pushOrder(BugAction.kill());
             board.setScore(board.getScore() + Board.scoreForBug);
         }
+        else
+        {
+            board.setScore(0);
+            board.setLost(true);
+        }
     }
 
     private final int color;
