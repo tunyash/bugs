@@ -18,6 +18,10 @@ public class Arrow extends BoardObject {
         bug.pushOrder(BugAction.forceToGo(direction));
     }
 
+    public Direction getDirection() {
+        return direction;
+    }
+
     private final Direction direction;
 
     @Override
