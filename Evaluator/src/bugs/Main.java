@@ -2,25 +2,20 @@ package bugs;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.Document;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
-import java.util.ArrayList;
 
 class Surface extends JPanel {
-    public Surface(Board area)
+    public Surface(Level level)
     {
         super();
-        this.area = area;
+        this.level = level;
     }
-    public Board area;
+    public Level level;
     @Override
     public void paintComponent(Graphics g) {
 
@@ -28,11 +23,12 @@ class Surface extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         int width = this.getWidth();
         int height = this.getHeight();
-        int maxAreaWidth = (int)((double)width * 0.9);
+        Board area = level.getBoard();
+        int maxAreaWidth = (int)((double)width * 0.8);
         int maxAreaHeight = (int)((double)height* 0.9);
         maxAreaHeight = Math.min(maxAreaHeight, maxAreaWidth * area.getHeight()/ area.getWidth());
         maxAreaWidth = Math.min(maxAreaWidth, maxAreaHeight * area.getWidth() / area.getHeight());
-        int lx = width / 2 - maxAreaWidth / 2;
+        int lx = (int)((double)width * 0.05);
         int ly = height / 2 - maxAreaHeight / 2;
         int cellSide = Math.min(maxAreaWidth / area.getWidth(), maxAreaHeight / area.getHeight());
         for (int i = 0; i < area.getHeight(); i++)
@@ -177,7 +173,7 @@ class GraphicsBugDrawer extends BugDrawer
     }
 
     public void doDrawing(Graphics2D surface, int cornerX, int cornerY, int cellSide) {
-        if (observable.getLifePoints() <= 0) return;
+        if (observable.getLifePoints() <= 0 || observable.getCurrentPosition() == null) return;
         int row = observable.getCurrentPosition().getRow();
         int column = observable.getCurrentPosition().getColumn();
         int cellX = cornerX + column * cellSide;
@@ -207,9 +203,16 @@ class GraphicsBugDrawer extends BugDrawer
     }
 }
 
+class Button
+{
+    EditorTool tool;
+    GameInterface gameInterface;
+
+}
+
 class MainForm extends JFrame
 {
-    public MainForm(Board area)
+    public MainForm(Level area)
     {
         super();
         add(new Surface(area));
@@ -218,66 +221,6 @@ class MainForm extends JFrame
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    }
-}
-
-class Area {
-    public String[][] area;
-    public int height, width;
-
-    public Area(int height, int width) {
-        this.height = height;
-        this.width = width;
-        area = new String[height][width];
-        for (int i = 0; i < height; i++)
-            for (int j = 0; j < width; j++)
-                area[i][j] = ".";
-    }
-
-    public void clear()
-    {
-        for (int i = 0; i < height; i++)
-            for (int j = 0; j < width; j++)
-                area[i][j] = ".";
-    }
-
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) builder.append(area[i][j]);
-            builder.append("\n");
-        }
-        return builder.toString();
-    }
-}
-
-class ConsoleBoardObjectDrawer extends BoardObjectDrawer {
-
-    public Area area;
-
-    public ConsoleBoardObjectDrawer(BoardObject object) {
-        super(object);
-    }
-    @Override
-    public void redraw() {
-        for (BoardPosition pos : observable.getOccupied())
-            area.area[pos.getRow()][pos.getColumn()] = observable.toString();
-    }
-}
-
-class ConsoleBugDrawer extends BugDrawer {
-
-    public Area area;
-
-    public ConsoleBugDrawer(Bug bug) {
-        super(bug);
-    }
-    @Override
-    public void redraw() {
-        if (observable.getCurrentPosition() != null && observable.getLifePoints() > 0)
-            area.area[observable.getCurrentPosition().getRow()][observable.getCurrentPosition().getColumn()] = observable.toString();
     }
 }
 
@@ -294,8 +237,9 @@ public class Main {
         DocumentBuilder builder = factory.newDocumentBuilder();
         org.w3c.dom.Document doc = builder.parse(ClassLoader.getSystemResourceAsStream("round1.xml"));
 */
-        Board myBoard = Board.loadFromFile(new File("round1.xml"));
-        MainForm form = new MainForm(myBoard);
+        Level myLevel = Level.loadFromFile(new File("round1.xml"));
+        Board myBoard = myLevel.getBoard();
+        MainForm form = new MainForm(myLevel);
         form.setVisible(true);
 
 
@@ -310,14 +254,14 @@ public class Main {
         }
 
 
-
-        while (myBoard.runOneRound()) {
+        //myBoard.runOneRound();
+        //while (myBoard.runOneRound()) {
            // area.clear();
             myBoard.drawOneRound();
            // System.out.print(area);
             form.repaint();
-            Thread.currentThread().sleep(200);
-        }
+            Thread.currentThread().sleep(800);
+        //}
         System.out.printf("Score: %d\n", myBoard.getScore());
     }
 

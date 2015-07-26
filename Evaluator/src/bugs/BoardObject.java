@@ -9,10 +9,9 @@ import org.w3c.dom.Node;
 
 abstract public class BoardObject {
 
-
-
     public BoardObject(int displayOrder) {
         this.displayOrder = displayOrder;
+        this.active = true;
     }
 
     public BoardPosition[] getOccupied() {
@@ -68,10 +67,22 @@ abstract public class BoardObject {
         if (observer != null) observer.redraw();
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public static int upperOrder = 1;
     public static int floorOrder = 0;
 
     protected BoardPosition[] occupied;
     protected int displayOrder;
+
+
+
+    protected boolean active;
     protected BoardObjectDrawer observer;
 }

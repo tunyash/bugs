@@ -3,12 +3,10 @@ package bugs;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -38,7 +36,7 @@ public class Board {
         int id = objects.size();
         objects.add(obj);
         for (BoardPosition pos : obj.getOccupied()) {
-          //  System.out.printf("%d %d\n", pos.getRow(), pos.getColumn());
+            //  System.out.printf("%d %d\n", pos.getRow(), pos.getColumn());
             cellObjects[pos.getRow()][pos.getColumn()].add(id);
         }
     }
@@ -48,45 +46,46 @@ public class Board {
     }
 
     public void addBug(BoardPosition pos, int color) {
-        bugs.add(new Bug(BugAction.appear(pos), color));
+        bugs.add(new Bug(pos, color));
     }
 
-    public void runGame() throws Exception {
-        currentTime = 0;
-        while (runOneRound())
-        {
-           // System.out.print(this);
-            drawOneRound();
-           // Process proc = Runtime.getRuntime().exec("clear");
-           // System.out.println(proc.waitFor());
-
-           // Thread.currentThread().sleep(150);
-            //for (int ii = 0; ii < 100; ii++)
-            //    System.out.println();
+    public void removeInactiveObjects() {
+        ArrayList<BoardObject> newObjects = new ArrayList<>();
+        for (BoardObject object : objects) {
+            if (object.isActive()) {
+                newObjects.add(object);
+            }
         }
+        objects = new ArrayList<>();
+        cellObjects = new ArrayList[height][width];
+        for (int i = 0; i < height; i++)
+            for (int j = 0; j < width; j++)
+                cellObjects[i][j] = new ArrayList<>();
+        for (BoardObject object: objects)
+            addObject(object);
     }
 
-    public boolean runOneRound()
-    {
+    public boolean runOneRound() {
         if (lost) return false;
         for (Bug bug : bugs)
             bug.evaluateOrders(this);
         for (Bug bug : bugs)
             if (bug.getLifePoints() > 0) {
                 for (Integer obj : cellObjects[bug.getCurrentPosition().getRow()][bug.getCurrentPosition().getColumn()])
-                    objects.get(obj).onBugStep(bug.getCurrentPosition(), bug, this);
+                    if (objects.get(obj).isActive())
+                        objects.get(obj).onBugStep(bug.getCurrentPosition(), bug, this);
             }
         for (BoardObject obj : objects)
-            obj.onTimerTick(this);
+            if (obj.isActive())
+                obj.onTimerTick(this);
         currentTime++;
         return currentTime < IT_COUNT;
     }
 
-    public void drawOneRound()
-    {
+    public void drawOneRound() {
         Integer[] ids = new Integer[objects.size()];
         for (int i = 0; i < ids.length; i++) ids[i] = i;
-        Arrays.sort(ids, new Comparator<Integer>(){
+        Arrays.sort(ids, new Comparator<Integer>() {
 
             @Override
             public int compare(Integer t0, Integer t1) {
@@ -95,8 +94,10 @@ public class Board {
                 return 0;
             }
         });
-        for (int i = 0; i < ids.length; i++) objects.get(ids[i]).notifyObserver();
-        for (Bug bug: bugs) bug.notifyObserver();
+        for (int i = 0; i < ids.length; i++)
+            if (objects.get(ids[i]).isActive())
+                objects.get(ids[i]).notifyObserver();
+        for (Bug bug : bugs) if (bug != null) bug.notifyObserver();
     }
 
 
@@ -143,7 +144,7 @@ public class Board {
     public boolean isObstacle(BoardPosition pos) {
         if (!isCorrectPosition(pos)) throw new AssertionError();
         for (Integer obj : cellObjects[pos.getRow()][pos.getColumn()])
-            if (objects.get(obj).isObstacle(pos)) return true;
+            if (objects.get(obj).isActive() && objects.get(obj).isObstacle(pos)) return true;
         return false;
     }
 
@@ -155,8 +156,9 @@ public class Board {
             for (int j = 0; j < width; j++)
                 mArea[i][j] = ".";
         for (BoardObject obj : objects)
-            for (BoardPosition pos : obj.getOccupied())
-                mArea[pos.getRow()][pos.getColumn()] = obj.toString();
+            if (obj.isActive())
+                for (BoardPosition pos : obj.getOccupied())
+                    mArea[pos.getRow()][pos.getColumn()] = obj.toString();
         for (Bug bug : bugs)
             if (bug.getCurrentPosition() != null && bug.getLifePoints() > 0)
                 mArea[bug.getCurrentPosition().getRow()][bug.getCurrentPosition().getColumn()] = bug.toString();
@@ -169,8 +171,7 @@ public class Board {
     }
 
 
-    public static Board loadFromFile(File file) throws Exception
-    {
+    public static Board loadFromFile(File file) throws Exception {
         DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
         f.setValidating(false);
         DocumentBuilder builder = f.newDocumentBuilder();
@@ -178,32 +179,32 @@ public class Board {
         Node root = doc.getFirstChild();
         return Board.loadFromNode(root);
     }
-    public static Board loadFromNode(Node root) throws Exception
-    {
-       /* DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
-        f.setValidating(false);
-        DocumentBuilder builder = f.newDocumentBuilder();
-        Document doc = builder.parse(file);
-        Node root = doc.getFirstChild();*/
+
+    public static Board loadFromNode(Node root) throws Exception {
         NamedNodeMap attr = root.getAttributes();
         int height = Integer.parseInt(attr.getNamedItem("height").getNodeValue());
         int width = Integer.parseInt(attr.getNamedItem("width").getNodeValue());
         //System.out.printf("%d %d\n", height, width);
         Board result = new Board(width, height);
-        for (int i = 0; i < root.getChildNodes().getLength(); i++)
-        {
+        for (int i = 0; i < root.getChildNodes().getLength(); i++) {
             Node cur = root.getChildNodes().item(i);
-            if (cur.getNodeName().equals("object"))
-            {
+            if (cur.getNodeName().equals("object")) {
                 result.addObject(BoardObject.loadFromNode(cur));
             }
-            if (cur.getNodeName().equals("bug"))
-            {
+            if (cur.getNodeName().equals("bug")) {
                 result.addBug(Bug.loadFromNode(cur));
             }
 
         }
         return result;
+    }
+
+    public ArrayList<Integer> getCellObjects(int row, int column) {
+        return cellObjects[row][column];
+    }
+
+    public BoardObject getObjectById(int id) {
+        return objects.get(id);
     }
 
     public boolean isLost() {
@@ -221,10 +222,8 @@ public class Board {
     private int currentTime;
 
 
-
     private boolean lost;
     private final int IT_COUNT = 200;
-
 
 
     private int score;

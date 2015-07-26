@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<board height = "10" width ="9">
+<level>
+<board height = "5" width ="9">
    <object type = "Trap" row = "0" column = "0" color = "1"></object>
    <object type = "Arrow" row = "3" column="0" direction = "RIGHT"></object>
     <object type = "Arrow" row = "3" column="3" direction = "UP"></object>
     <object type = "Arrow" row = "0" column="3" direction = "LEFT"></object>
-    <bug row = "3" column = "0" color = "1"></bug>
     <object type = "Trap" row = "1" column = "1" color = "2"></object>
     <object type = "Arrow" row = "4" column="1" direction = "RIGHT"></object>
     <object type = "Arrow" row = "4" column="8" direction = "UP"></object>
     <object type = "Arrow" row = "1" column="8" direction = "LEFT"></object>
     <object type= "SimpleObstacle" row="2" column="2"></object>
     <object type= "SimpleObstacle" row="2" column="1"></object>
-
-    <bug row = "4" column = "1" color = "2"></bug>
+    <bug row = "3" column="0" color="1"></bug>
+    <bug row = "4" column="1" color="2"></bug>
 </board>
+</level>

@@ -15,17 +15,20 @@ import java.util.Collections;
 public class Bug {
 
 
-    public Bug(BugAction startAction, int color) {
+
+    public Bug(BoardPosition pos, int color) {
         orders = new ArrayList<>();
         lifePoints = 100;
-        pushOrder(startAction);
+        pushOrder(BugAction.appear(pos));
         this.color = color;
+        initialPosition = pos;
     }
-    public Bug(BugAction startAction) {
+    public Bug(BoardPosition pos) {
         orders = new ArrayList<>();
         lifePoints = 100;
-        pushOrder(startAction);
+        pushOrder(BugAction.appear(pos));
         color = -1;
+        initialPosition = pos;
     }
 
     public Bug(int color) {
@@ -46,7 +49,7 @@ public class Bug {
         int row = Integer.parseInt(map.getNamedItem("row").getNodeValue());
         int column = Integer.parseInt(map.getNamedItem("column").getNodeValue());
         int color = Integer.parseInt(map.getNamedItem("color").getNodeValue());
-        return new Bug(BugAction.appear(new BoardPosition(row, column)), color);
+        return new Bug(new BoardPosition(row, column), color);
     }
 
     public BoardPosition getCurrentPosition() {
@@ -136,7 +139,16 @@ public class Bug {
         return ColoredString.getColored(this.color,"B");
     }
 
+
+    public BoardPosition getInitialPosition() {
+        return initialPosition;
+    }
+
+
     private BoardPosition currentPosition;
+
+
+    private BoardPosition initialPosition;
     ArrayList<BugAction> orders;
     private int lifePoints;
 

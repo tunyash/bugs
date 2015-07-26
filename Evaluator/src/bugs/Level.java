@@ -17,31 +17,43 @@ public class Level {
     public Level() {
         additionalObjects = new ArrayList<>();
         bugs = new ArrayList<>();
+        finalize = false;
     }
 
-    public Level(Board initial)
+    public Level(Board board)
     {
-        this.initial = initial;
+        this.board = board;
         additionalObjects = new ArrayList<>();
         bugs = new ArrayList<>();
+        finalize = false;
     }
 
     void addBug(BoardPosition pos, Integer color)
     {
-        bugs.add(new Pair<>(pos, color));
+        if (finalize) throw new AssertionError();
+        bugs.add(new Bug(pos, color));
+    }
+
+    void addBug(Bug bug)
+    {
+        if (finalize) throw new AssertionError();
+        bugs.add(bug);
     }
 
     void addAditionalObject(String object, Integer count)
     {
+        if (finalize) throw new AssertionError();
         additionalObjects.add(new Pair<>(object, count));
     }
 
-    public Board getInitial() {
-        return initial;
+
+    public boolean isAvaliable(int row, int column)
+    {
+        return available[row][column];
     }
 
-    public void setInitial(Board initial) {
-        this.initial = initial;
+    public Board getBoard() {
+        return board;
     }
 
     public boolean isObjectAvailable(String name)
@@ -61,12 +73,13 @@ public class Level {
         return additionalObjects;
     }
 
-    public void setBugs(ArrayList<Pair<BoardPosition, Integer>> bugs) {
+    public void setBugs(ArrayList<Bug> bugs) {
+        if (finalize) throw new AssertionError();
         this.bugs = bugs;
     }
 
 
-    public ArrayList<Pair<BoardPosition, Integer>> getBugs() {
+    public ArrayList<Bug> getBugs() {
         return bugs;
     }
 
@@ -76,14 +89,13 @@ public class Level {
         Level result = new Level();
         for (int i = 0; i < node.getChildNodes().getLength(); i++)
         {
+
             Node cur = node.getChildNodes().item(i);
+            System.out.println(cur.getNodeName());
             if (cur.getNodeName().equals("board"))
-                result.initial = Board.loadFromNode(cur);
+                result.board = Board.loadFromNode(cur);
             if (cur.getNodeName().equals("bug")) {
-                int row = Integer.parseInt(cur.getAttributes().getNamedItem("row").getNodeValue());
-                int column = Integer.parseInt(cur.getAttributes().getNamedItem("column").getNodeValue());
-                int color = Integer.parseInt(cur.getAttributes().getNamedItem("color").getNodeValue());
-                result.addBug(new BoardPosition(row, column), color);
+                result.addBug(Bug.loadFromNode(cur));
             }
             if (cur.getNodeName().equals("objectType"))
             {
@@ -110,6 +122,7 @@ public class Level {
                 }
             }
         }
+        result.setFinalize(true);
         return result;
     }
 
@@ -123,9 +136,21 @@ public class Level {
         return Level.loadFromNode(root);
     }
 
-    private Board initial;
+    public boolean isFinalize() {
+        return finalize;
+    }
+
+    public void setFinalize(boolean finalize) {
+        this.finalize = finalize;
+    }
+
+    private Board board;
+
+
+
+    private boolean finalize;
     private ArrayList<Pair<String, Integer>> additionalObjects;
-    private ArrayList<Pair<BoardPosition, Integer>> bugs;
+    private ArrayList<Bug> bugs;
     private boolean[][] available;
 
 }
