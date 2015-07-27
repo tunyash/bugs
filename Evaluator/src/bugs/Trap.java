@@ -1,5 +1,6 @@
 package bugs;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
@@ -50,6 +51,24 @@ public class Trap extends BoardObject {
             board.setScore(0);
             board.setLost(true);
         }
+    }
+
+    @Override
+    public Node saveToNode(Document document) throws Exception {
+        Node el = document.createElement("object");
+        Node type = document.createAttribute("type");
+        type.setNodeValue(this.getType());
+        el.getAttributes().setNamedItemNS(type);
+        Node row = document.createAttribute("row");
+        row.setNodeValue(Integer.toString(this.occupied[0].getRow()));
+        el.getAttributes().setNamedItemNS(row);
+        Node column = document.createAttribute("column");
+        column.setNodeValue(Integer.toString(this.occupied[0].getColumn()));
+        el.getAttributes().setNamedItemNS(column);
+        Node color = document.createAttribute("color");
+        color.setNodeValue(Integer.toString(this.color));
+        el.getAttributes().setNamedItemNS(color);
+        return el;
     }
 
     private int color;

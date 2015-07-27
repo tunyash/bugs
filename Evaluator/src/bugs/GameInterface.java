@@ -1,5 +1,6 @@
 package bugs;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -26,11 +27,7 @@ public class GameInterface {
         if (activeTool != null) activeTool.boardClick(row, column);
         level.getBoard().drawOneRound();
     }
-    public void buttonClick(int num)
-    {
-        if (locked) return;
-        if (num < tools.size()) activeTool = tools.get(num);
-    }
+
 
     public void buttonClick(EditorTool tool)
     {
@@ -52,8 +49,16 @@ public class GameInterface {
     public boolean isLocked() {
         return locked;
     }
-
-    public void setLocked(boolean locked) {
+//TODO: saving to file is piece of shit, it should be saved to memory
+    public void setLocked(boolean locked) throws Exception{
+        if (locked)
+        {
+            level.getBoard().saveToFile("tmp.xml");
+        }
+        else
+        {
+            level.setBoard(Board.loadFromFile(new File("tmp.xml")));
+        }
         this.locked = locked;
     }
 

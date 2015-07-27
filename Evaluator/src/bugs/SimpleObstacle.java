@@ -1,5 +1,6 @@
 package bugs;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
@@ -37,6 +38,22 @@ public class SimpleObstacle extends BoardObject{
         //System.out.printf("%d %d ?? %d %d\n", pos.getRow(), pos.getColumn(), occupied[0].getRow(), occupied[0].getColumn());
         return (pos.compareTo(occupied[0]) == 0);
     }
+
+    @Override
+    public Node saveToNode(Document document) throws Exception {
+        Node el = document.createElement("object");
+        Node type = document.createAttribute("type");
+        type.setNodeValue(this.getType());
+        el.getAttributes().setNamedItemNS(type);
+        Node row = document.createAttribute("row");
+        row.setNodeValue(Integer.toString(this.occupied[0].getRow()));
+        el.getAttributes().setNamedItemNS(row);
+        Node column = document.createAttribute("column");
+        column.setNodeValue(Integer.toString(this.occupied[0].getColumn()));
+        el.getAttributes().setNamedItemNS(column);
+        return el;
+    }
+
     @Override
     public String toString()
     {

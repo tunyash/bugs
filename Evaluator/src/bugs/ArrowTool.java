@@ -15,6 +15,7 @@ public class ArrowTool extends EditorTool {
     public void boardClick(int row, int column) {
         if (!gameInterface.getLevel().isObjectAvailable("Arrow")
                 || !gameInterface.getLevel().isAvaliable(row,column)) return;
+        System.out.println("added arrow");
         gameInterface.getLevel().getBoard().addObject(new Arrow(new BoardPosition(row,column), direction));
         gameInterface.getLevel().decrease("Arrow");
     }

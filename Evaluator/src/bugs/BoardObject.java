@@ -1,6 +1,16 @@
 package bugs;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * Created by tunyash on 7/11/15.
@@ -59,6 +69,19 @@ abstract public class BoardObject {
         //return null;
     }
 
+    public abstract Node saveToNode(Document document) throws Exception;
+    public void saveToFile(String filename) throws Exception
+    {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document document = builder.newDocument();
+        document.appendChild(this.saveToNode(document));
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(document);
+        StreamResult result = new StreamResult(new FileOutputStream(new File(filename)));
+        transformer.transform(source, result);
+    }
     public void setObserver(BoardObjectDrawer observer) {
         this.observer = observer;
     }

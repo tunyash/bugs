@@ -66,7 +66,7 @@ public class Board {
         for (int i = 0; i < height; i++)
             for (int j = 0; j < width; j++)
                 cellObjects[i][j] = new ArrayList<>();
-        for (BoardObject object: objects)
+        for (BoardObject object: newObjects)
             addObject(object);
     }
 
@@ -206,6 +206,7 @@ public class Board {
 
     public Node saveToNode(Document document) throws Exception
     {
+        this.removeInactiveObjects();
         Node el = document.createElement("board");
         Node width = document.createAttribute("width");
         width.setNodeValue(Integer.toString(this.width));
@@ -217,6 +218,9 @@ public class Board {
         System.out.println(document.getFirstChild());
         for (Bug bug:bugs)
             el.appendChild(bug.saveToNode(document));
+        for (BoardObject object:objects)
+            el.appendChild(object.saveToNode(document));
+
         return el;
     }
 

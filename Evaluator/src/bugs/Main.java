@@ -2,6 +2,7 @@ package bugs;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.tree.ExpandVetoException;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -25,14 +26,13 @@ class Surface extends JPanel {
                 recalc();
                 Board board = gameInterface.getLevel().getBoard();
                 if (mouseEvent.getX() >= lx && mouseEvent.getX() <= lx + cellSide * board.getWidth()
-                        && mouseEvent.getY() >= ly && mouseEvent.getY() <= ly + cellSide * board.getHeight())
-                {
-                    gameInterface.boardClick((mouseEvent.getY()-ly)/cellSide,(mouseEvent.getX()-lx)/cellSide);
+                        && mouseEvent.getY() >= ly && mouseEvent.getY() <= ly + cellSide * board.getHeight()) {
+                    gameInterface.boardClick((mouseEvent.getY() - ly) / cellSide, (mouseEvent.getX() - lx) / cellSide);
                 }
                 for (int i = 0; i < buttons.size(); i++)
                     if (mouseEvent.getX() >= blx && mouseEvent.getX() <= blx + cellSide
-                            && mouseEvent.getY() >= ly + i*cellSide && mouseEvent.getY() < ly + (i+1)*cellSide) {
-                        for (Button button2: buttons)
+                            && mouseEvent.getY() >= ly + i * cellSide && mouseEvent.getY() < ly + (i + 1) * cellSide) {
+                        for (Button button2 : buttons)
                             if (button2 != buttons.get(i)) button2.setState(0);
                         buttons.get(i).onClick();
                     }
@@ -44,7 +44,7 @@ class Surface extends JPanel {
                     else if (object.getType().equals("SimpleObstacle"))
                         new GraphicsSimpleObstacleDrawer((SimpleObstacle) object);
                 }
-                pane.repaint(0,0,0,getWidth(),getHeight());
+                pane.repaint(0, 0, 0, getWidth(), getHeight());
             }
 
             @Override
@@ -71,10 +71,10 @@ class Surface extends JPanel {
 
     public GameInterface gameInterface;
     ArrayList<Button> buttons;
-    int lx,ly,blx,cellSide;
+    int lx, ly, blx, cellSide;
     final JFrame pane;
-    synchronized void recalc()
-    {
+
+    synchronized void recalc() {
         Level level = gameInterface.getLevel();
         int width = this.getWidth();
         int height = this.getHeight();
@@ -114,8 +114,7 @@ class Surface extends JPanel {
             if (draw != null) draw.doDrawing(g2d, lx, ly, cellSide);
         }
 
-        for (int i = 0; i < buttons.size(); i++)
-        {
+        for (int i = 0; i < buttons.size(); i++) {
             Button button = buttons.get(i);
             button.draw(g2d, blx, ly + cellSide * i, cellSide);
         }
@@ -176,8 +175,7 @@ class GraphicsArrowDrawer extends GraphicsBoardObjectDrawer {
         }
     }
 
-    public static BufferedImage rotateImage(BufferedImage img, Direction dir)
-    {
+    public static BufferedImage rotateImage(BufferedImage img, Direction dir) {
         AffineTransform tr = AffineTransform.getRotateInstance(Math.toRadians(90), img.getWidth() / 2, img.getHeight() / 2);
         AffineTransformOp op = new AffineTransformOp(tr, AffineTransformOp.TYPE_BILINEAR);
         int cnt = 0;
@@ -341,10 +339,10 @@ public class Main {
         ArrayList<Button> buttons = new ArrayList<>();
         final GameInterface gameInterface = new GameInterface(myLevel);
         EditorTool del = new DeleteTool(gameInterface);
-        EditorTool leftArrow = new ArrowTool(gameInterface,Direction.LEFT);
-        EditorTool rightArrow = new ArrowTool(gameInterface,Direction.RIGHT);
-        EditorTool upArrow = new ArrowTool(gameInterface,Direction.UP);
-        EditorTool downArrow = new ArrowTool(gameInterface,Direction.DOWN);
+        EditorTool leftArrow = new ArrowTool(gameInterface, Direction.LEFT);
+        EditorTool rightArrow = new ArrowTool(gameInterface, Direction.RIGHT);
+        EditorTool upArrow = new ArrowTool(gameInterface, Direction.UP);
+        EditorTool downArrow = new ArrowTool(gameInterface, Direction.DOWN);
 
         gameInterface.addTool(del);
         gameInterface.addTool(rightArrow);
@@ -378,26 +376,47 @@ public class Main {
                     @Override
                     public void run() {
                         int it = 0;
-                        while (gameInterface.getLevel().getBoard().runOneRound())
-                        {
+                        try {
+                            gameInterface.setLocked(true);
+                        } catch (Exception e) {
+
+                        }
+
+                        while (gameInterface.getLevel().getBoard().runOneRound()) {
                             gameInterface.getLevel().getBoard().drawOneRound();
                             form.repaint();
                             System.out.printf("some %d\n", it++);
-                            try
-                            {
-                                Thread.currentThread().sleep(100);
-                            } catch (Exception e)
-                            {
+                            try {
+                                Thread.currentThread().sleep(30);
+                            } catch (Exception e) {
 
                             }
 
                         }
+                        try {
+                            gameInterface.setLocked(false);
+                        } catch (Exception e) {
+
+                        }
                     }
                 };
+                for (BoardObject object : gameInterface.getLevel().getBoard().getObjects()) {
+                    if (object.getObserver() != null) continue;
+                    if (object.getType().equals("Arrow")) new GraphicsArrowDrawer((Arrow) object);
+                    else if (object.getType().equals("Trap")) new GraphicsTrapDrawer((Trap) object);
+                    else if (object.getType().equals("SimpleObstacle"))
+                        new GraphicsSimpleObstacleDrawer((SimpleObstacle) object);
+                }
+                for (Bug bug : gameInterface.getLevel().getBoard().getBugs()) {
+                    new GraphicsBugDrawer(bug);
 
-                gameInterface.setLocked(true);
-                play.start();
-                gameInterface.setLocked(false);
+                }
+                try {
+                    play.start();
+
+                } catch (Exception e) {
+
+                }
             }
         });
         buttons.get(5).addImage(ImageIO.read(new File("play.png")), 0);

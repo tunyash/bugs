@@ -1,5 +1,6 @@
 package bugs;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
@@ -42,6 +43,24 @@ public class Arrow extends BoardObject {
     public void onBugStep(BoardPosition stepPos, Bug bug, Board board) {
         //System.out.println("Bug on the arrow");
         bug.pushOrder(BugAction.forceToGo(direction));
+    }
+
+    @Override
+    public Node saveToNode(Document document) throws Exception {
+        Node el = document.createElement("object");
+        Node type = document.createAttribute("type");
+        type.setNodeValue("Arrow");
+        el.getAttributes().setNamedItemNS(type);
+        Node row = document.createAttribute("row");
+        row.setNodeValue(Integer.toString(this.occupied[0].getRow()));
+        el.getAttributes().setNamedItemNS(row);
+        Node column = document.createAttribute("column");
+        column.setNodeValue(Integer.toString(this.occupied[0].getColumn()));
+        el.getAttributes().setNamedItemNS(column);
+        Node direction = document.createAttribute("direction");
+        direction.setNodeValue(this.direction.toString());
+        el.getAttributes().setNamedItemNS(direction);
+        return el;
     }
 
     public Direction getDirection() {

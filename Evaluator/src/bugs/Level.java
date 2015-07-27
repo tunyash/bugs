@@ -148,10 +148,12 @@ public class Level {
         this.finalize = finalize;
     }
 
+
+    //TODO: don't do it like that, available should be independent from board, but it should be asserted that width and height are same
     public void setBoard(Board board) {
 
         this.board = board;
-        available = new boolean[board.getHeight()][board.getWidth()];
+        if (available == null) available = new boolean[board.getHeight()][board.getWidth()];
     }
 
     private Board board;
