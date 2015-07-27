@@ -372,6 +372,8 @@ public class Main {
         buttons.add(new Button(null) {
             @Override
             public void onClick() {
+                if (getState() == 1) return;
+                final Button backLink = this;
                 Thread play = new Thread() {
                     @Override
                     public void run() {
@@ -398,6 +400,15 @@ public class Main {
                         } catch (Exception e) {
 
                         }
+                        backLink.setState(0);
+                        for (BoardObject object : gameInterface.getLevel().getBoard().getObjects()) {
+                            if (object.getObserver() != null) continue;
+                            if (object.getType().equals("Arrow")) new GraphicsArrowDrawer((Arrow) object);
+                            else if (object.getType().equals("Trap")) new GraphicsTrapDrawer((Trap) object);
+                            else if (object.getType().equals("SimpleObstacle"))
+                                new GraphicsSimpleObstacleDrawer((SimpleObstacle) object);
+                        }
+                        form.repaint();
                     }
                 };
                 for (BoardObject object : gameInterface.getLevel().getBoard().getObjects()) {
@@ -411,12 +422,14 @@ public class Main {
                     new GraphicsBugDrawer(bug);
 
                 }
+                this.setState(1);
                 try {
                     play.start();
 
                 } catch (Exception e) {
 
                 }
+
             }
         });
         buttons.get(5).addImage(ImageIO.read(new File("play.png")), 0);
