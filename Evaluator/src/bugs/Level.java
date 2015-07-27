@@ -26,6 +26,8 @@ public class Level {
         additionalObjects = new ArrayList<>();
         bugs = new ArrayList<>();
         finalize = false;
+        available = new boolean[board.getHeight()][board.getWidth()];
+
     }
 
     void addBug(BoardPosition pos, Integer color)
@@ -93,7 +95,7 @@ public class Level {
             Node cur = node.getChildNodes().item(i);
             System.out.println(cur.getNodeName());
             if (cur.getNodeName().equals("board"))
-                result.board = Board.loadFromNode(cur);
+                result.setBoard(Board.loadFromNode(cur));
             if (cur.getNodeName().equals("bug")) {
                 result.addBug(Bug.loadFromNode(cur));
             }
@@ -115,8 +117,10 @@ public class Level {
                     Node subcur = cur.getChildNodes().item(j);
                     if (subcur.getNodeName().equals("position"))
                     {
-                        int row = Integer.parseInt(cur.getAttributes().getNamedItem("row").getNodeValue());
-                        int column = Integer.parseInt(cur.getAttributes().getNamedItem("column").getNodeValue());
+
+                        int row = Integer.parseInt(subcur.getAttributes().getNamedItem("row").getNodeValue());
+                        int column = Integer.parseInt(subcur.getAttributes().getNamedItem("column").getNodeValue());
+                        System.out.printf("%d %d\n", row, column);
                         result.available[row][column] = true;
                     }
                 }
@@ -142,6 +146,12 @@ public class Level {
 
     public void setFinalize(boolean finalize) {
         this.finalize = finalize;
+    }
+
+    public void setBoard(Board board) {
+
+        this.board = board;
+        available = new boolean[board.getHeight()][board.getWidth()];
     }
 
     private Board board;

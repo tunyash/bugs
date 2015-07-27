@@ -1,12 +1,18 @@
 package bugs;
 
+import org.w3c.dom.*;
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
+import javax.swing.text.*;
+import javax.swing.text.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -33,11 +39,10 @@ public class Board {
     }
 
     public void addObject(BoardObject obj) {
-        int id = objects.size();
         objects.add(obj);
         for (BoardPosition pos : obj.getOccupied()) {
             //  System.out.printf("%d %d\n", pos.getRow(), pos.getColumn());
-            cellObjects[pos.getRow()][pos.getColumn()].add(id);
+            cellObjects[pos.getRow()][pos.getColumn()].add(obj);
         }
     }
 
@@ -71,9 +76,9 @@ public class Board {
             bug.evaluateOrders(this);
         for (Bug bug : bugs)
             if (bug.getLifePoints() > 0) {
-                for (Integer obj : cellObjects[bug.getCurrentPosition().getRow()][bug.getCurrentPosition().getColumn()])
-                    if (objects.get(obj).isActive())
-                        objects.get(obj).onBugStep(bug.getCurrentPosition(), bug, this);
+                for (BoardObject obj : cellObjects[bug.getCurrentPosition().getRow()][bug.getCurrentPosition().getColumn()])
+                    if (obj.isActive())
+                        obj.onBugStep(bug.getCurrentPosition(), bug, this);
             }
         for (BoardObject obj : objects)
             if (obj.isActive())
@@ -143,8 +148,8 @@ public class Board {
 
     public boolean isObstacle(BoardPosition pos) {
         if (!isCorrectPosition(pos)) throw new AssertionError();
-        for (Integer obj : cellObjects[pos.getRow()][pos.getColumn()])
-            if (objects.get(obj).isActive() && objects.get(obj).isObstacle(pos)) return true;
+        for (BoardObject obj : cellObjects[pos.getRow()][pos.getColumn()])
+            if (obj.isActive() && obj.isObstacle(pos)) return true;
         return false;
     }
 
@@ -199,13 +204,41 @@ public class Board {
         return result;
     }
 
-    public ArrayList<Integer> getCellObjects(int row, int column) {
+    public Node saveToNode(Document document) throws Exception
+    {
+        Node el = document.createElement("board");
+        Node width = document.createAttribute("width");
+        width.setNodeValue(Integer.toString(this.width));
+        el.getAttributes().setNamedItemNS(width);
+        Node height = document.createAttribute("height");
+        height.setNodeValue(Integer.toString(this.height));
+        el.getAttributes().setNamedItemNS(height);
+
+        System.out.println(document.getFirstChild());
+        for (Bug bug:bugs)
+            el.appendChild(bug.saveToNode(document));
+        return el;
+    }
+
+    public void saveToFile(String filename) throws Exception
+    {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document document = builder.newDocument();
+        document.appendChild(this.saveToNode(document));
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(document);
+
+        StreamResult result = new StreamResult(new FileOutputStream(new File(filename)));
+
+        transformer.transform(source, result);
+    }
+
+    public ArrayList<BoardObject> getCellObjects(int row, int column) {
         return cellObjects[row][column];
     }
 
-    public BoardObject getObjectById(int id) {
-        return objects.get(id);
-    }
 
     public boolean isLost() {
         return lost;
@@ -229,5 +262,5 @@ public class Board {
     private int score;
     private ArrayList<BoardObject> objects;
     private ArrayList<Bug> bugs;
-    private ArrayList<Integer>[][] cellObjects;
+    private ArrayList<BoardObject>[][] cellObjects;
 }

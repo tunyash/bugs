@@ -14,4 +14,53 @@
     <bug row = "3" column="0" color="1"></bug>
     <bug row = "4" column="1" color="2"></bug>
 </board>
+ <objectType name="Arrow" count="100"></objectType>
+ <available width = "9" height = "5">
+    <position row = "0" column = "0"></position>
+    <position row = "0" column = "1"></position>
+    <position row = "0" column = "2"></position>
+  <position row = "0" column = "3"></position>
+  <position row = "0" column = "4"></position>
+  <position row = "0" column = "5"></position>
+  <position row = "0" column = "6"></position>
+  <position row = "0" column = "7"></position>
+  <position row = "0" column = "8"></position>
+  <position row = "1" column = "0"></position>
+  <position row = "1" column = "1"></position>
+  <position row = "1" column = "2"></position>
+  <position row = "1" column = "3"></position>
+  <position row = "1" column = "4"></position>
+  <position row = "1" column = "5"></position>
+  <position row = "1" column = "6"></position>
+  <position row = "1" column = "7"></position>
+  <position row = "1" column = "8"></position>
+  <position row = "2" column = "0"></position>
+  <position row = "2" column = "1"></position>
+  <position row = "2" column = "2"></position>
+  <position row = "2" column = "3"></position>
+  <position row = "2" column = "4"></position>
+  <position row = "2" column = "5"></position>
+  <position row = "2" column = "6"></position>
+  <position row = "2" column = "7"></position>
+  <position row = "2" column = "8"></position>
+  <position row = "3" column = "0"></position>
+  <position row = "3" column = "1"></position>
+  <position row = "3" column = "2"></position>
+  <position row = "3" column = "3"></position>
+  <position row = "3" column = "4"></position>
+  <position row = "3" column = "5"></position>
+  <position row = "3" column = "6"></position>
+  <position row = "3" column = "7"></position>
+  <position row = "3" column = "8"></position>
+  <position row = "4" column = "0"></position>
+  <position row = "4" column = "1"></position>
+  <position row = "4" column = "2"></position>
+  <position row = "4" column = "3"></position>
+  <position row = "4" column = "4"></position>
+  <position row = "4" column = "5"></position>
+  <position row = "4" column = "6"></position>
+  <position row = "4" column = "7"></position>
+  <position row = "4" column = "8"></position>
+
+ </available>
 </level>

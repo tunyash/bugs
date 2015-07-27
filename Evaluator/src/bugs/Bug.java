@@ -1,8 +1,12 @@
 package bugs;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import javax.swing.text.Element;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -144,6 +148,23 @@ public class Bug {
         return initialPosition;
     }
 
+    public Node saveToNode(Document document) throws Exception{
+        Node el = document.createElement("bug");
+        Node row = document.createAttribute("row");
+        row.setNodeValue(Integer.toString(this.initialPosition.getRow()));
+        el.getAttributes().setNamedItemNS(row);
+        Node column = document.createAttribute("column");
+        column.setNodeValue(Integer.toString(this.initialPosition.getColumn()));
+        el.getAttributes().setNamedItemNS(column);
+        Node color = document.createAttribute("color");
+        color.setNodeValue(Integer.toString(this.color));
+        el.getAttributes().setNamedItemNS(color);
+
+        //el.getAttributes().setNamedItemNS("column", Integer.toString(this.initialPosition.getColumn()));
+        //el.getAttributes().setNamedItemNS("color", Integer.toString(this.color));
+        return el;
+    }
+
 
     private BoardPosition currentPosition;
 
@@ -160,5 +181,6 @@ public class Bug {
 
     private BugDrawer observer;
     private int color;
+
 
 }

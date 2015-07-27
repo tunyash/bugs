@@ -12,9 +12,11 @@ public class DeleteTool extends EditorTool{
     @Override
     public void boardClick(int row, int column) {
         if (!gameInterface.getLevel().isAvaliable(row, column)) return;
-        for (Integer id:gameInterface.getLevel().getBoard().getCellObjects(row,column))
+        System.out.println("board click");
+        for (BoardObject obj:gameInterface.getLevel().getBoard().getCellObjects(row,column))
         {
-            gameInterface.getLevel().getBoard().getObjectById(id).setActive(false);
+            System.out.printf("Deleted %s\n",obj.getType());
+            obj.setActive(false);
         }
     }
 }
